@@ -14,7 +14,7 @@ function  check(){
         }
     }
 
-    if(val1.length < 1 || val2.length < 1 || setv.length < 1){
+    if(val1.length < 1 || val2.length < 1 || setv == null){
         alert("enter value in all fields");
         reset();
         return false;
@@ -22,15 +22,13 @@ function  check(){
     else{
        return true;
     }
-}
-class Node{
+}class Node{
     constructor(d)
     {
         this.data = d;
         this.next = null;
     }
-}
-class LinkedList{
+}class LinkedList{
     constructor(){
         this.head=null;
     }
@@ -50,38 +48,6 @@ class LinkedList{
         }
         return false;
     }
-    getUnion(head1, head2)
-    {
-        var t1 = head1, t2 = head2;
-        while (t1 != null) {
-            this.push(t1.data);
-            t1 = t1.next;
-        }
-        while (t2 != null) {
-            if (!this.isPresent(this.head, t2.data))
-                this.push(t2.data);
-            t2 = t2.next;
-        }
-    }
-     
-    getIntersection(head1, head2)
-    {
-        var result = null;
-        var t1 = head1;
-        while (t1 != null) {
-            if (this.isPresent(head2, t1.data))
-                this.push(t1.data);
-            t1 = t1.next;
-        }
-    }
-    printList()
-    {
-        var temp = this.head;
-        while (temp != null) {
-            document.write(temp.data + " ");
-            temp = temp.next;
-        }
-    }
 }
 function run(){
     var list1 = new LinkedList();
@@ -97,14 +63,27 @@ function run(){
         list2.push(val2[i]);
     }
     if(setv == "union"){
-        list1.getUnion(list1.head, list2.head);
-        str = "head";
-        var current = list1.head;
-        while(current != null){
-            str += current.data;
-            current = current.next;
+        var list3 = new LinkedList();
+        var current1 = list1.head;
+        var current2 = list2.head;
+        while(current1 != null){
+            list3.push(current1.data);
+            current1 = current1.next;
         }
-        document.getElementById("result").innerHTML = str;
+        while(current2 != null){
+            if(!list3.isPresent(list3.head,current2.data)){
+                list3.push(current2.data);
+            }
+            current2 = current2.next;
+        }
+        str = list3.head.data;
+        current3 = list3.head.next;
+        while(current3 != null){
+            str = str+" "+current3.data;
+            current3 = current3.next;
+        }
+        document.getElementById("result").value = str;
+     
     }
     else if(setv == "intersection"){
         var list3 = new LinkedList();
@@ -113,7 +92,7 @@ function run(){
         while(current1 != null){
             while(current2 != null){
                 if(current1.data == current2.data){
-                    list3.add(current1.data);
+                    list3.push(current1.data);
                 }
                 current2 = current2.next;
             }
@@ -126,14 +105,11 @@ function run(){
             str += current3.data;
             current3 = current3.next;
         }
-        document.getElementById("result").innerHTML = str;
+        document.getElementById("result").value = str;
     }
 
 }
 }
-
-
-
 function reset(){
     document.getElementById("list1").value="";
     document.getElementById("list2").value="";
